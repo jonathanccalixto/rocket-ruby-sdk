@@ -4,7 +4,7 @@ module Rocket
       attr_accessor :invoice_token, :pay_invoice_url, :client_pass
       attr_accessor :invoice_status, :merchant_id
 
-      def initialize(token, env = :production, debug = false)
+      def initialize(token, env = Rocket.environment, debug = false)
         super(debug)
 
         raise RocketException.new "Please Provide a Valid Token" if token.blank?
@@ -26,16 +26,18 @@ module Rocket
         self.data_send = self.make_json(invoice)
         self.method_send = "put-invoice/#{self.token}"
         self.curl_send
+
         retorno = self.json_array(self.return_data)
 
         raise RocketException.new retorno.message unless retorno.success
 
-        self.invoice_token = retorno.invoiceCode
+        self.invoice_token = retorno.invoice_code
         self.client_pass = false
-        self.invoice_token = retorno.returnUrl
+        self.pay_invoice_url = retorno.return_url
+        self.invoice_status = retorno.invoice_status
 
-        if retorno.user && retorno.user.new.blank?
-          self.client_pass = retorno.user.userPassword
+        if retorno.respond_to?(:user) && retorno.user && retorno.user.new.blank?
+          self.client_pass = retorno.user.user_password
         end
 
         retorno
@@ -50,9 +52,9 @@ module Rocket
 
         raise RocketException.new retorno.message unless retorno.success
 
-        self.invoice_status = retorno.invoiceStatus
+        self.invoice_status = retorno.invoice_status
         self.invoice_token = retorno.invoice_id
-        self.merchant_id = retorno.merchantId
+        self.merchant_id = retorno.merchant_id
 
         retorno
       end

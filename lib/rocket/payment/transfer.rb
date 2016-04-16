@@ -1,7 +1,7 @@
 module Rocket
   module Payment
     class Transfer < Rocket::Core::Function
-      def initialize(token, env = :production, debug = false)
+      def initialize(token, env = Rocket.environment, debug = false)
         super(debug)
 
         raise RocketException.new "Please Provide a Valid Token" if token.blank?
