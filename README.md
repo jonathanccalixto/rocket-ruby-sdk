@@ -1,6 +1,7 @@
 # Rocket::Ruby::Sdk
 
 Ruby SDK to Rocket API, with this SDK you can create invoices and retrieve invoice status from out Simple Checkout System, you can make API calls when your plan have it.
+This gem is based at [SDK PHP](https://github.com/Rocket-System/php-sdk)
 
 ## Installation
 
@@ -45,10 +46,9 @@ product2.quantity = 1
 product2.unity_price = BigDecimal.new('1000.00')
 
 invoice.add_products(product)
-
 invoice.add_products(product2)
 
-checkout.createInvoice(invoice)
+checkout.create_invoice(invoice)
 
 return_url = checkout.pay_invoice_url
 invoice_unique_code = checkout.invoice_token
@@ -94,13 +94,15 @@ send = transfer.send_transfer 'user@email.com', BigDecimal.new('20.00'), 'USD',
 send.status
 ```
 
-## Development
+## Known issues
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+* Cover the gem with tests (I believe not something from another world)
+* Improve DSL SDK (It was based on a [php code](https://github.com/Rocket-System/php-sdk))
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+So  ...
+
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rocket-ruby-sdk.
+Bug reports and pull requests are welcome on GitHub at https://github.com/jonathanccalixto/rocket-ruby-sdk.
 
